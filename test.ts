@@ -1,34 +1,42 @@
-let hellowWorld = "Hello World";
 
 
-interface User {
-  name: string;
-  id: number;
-}
+// Unios Type 
 
+type Binary = true | false
 
-class UserAccount {
-  name: string;
-  id: number;
+const a: Binary = true
 
-  constructor(name: string, id: number) {
-    this.name = name;
-    this.id = id;
+type WindowsStates = "running" | "stoped" | "restating"
+
+type LockStates = "open" | "closed"
+
+type PositiveOddNumberUnderTen = 2 | 4 | 6 | 8
+
+function padLeft(value: string, padding: string | number) {
+  if (typeof padding === "number") {
+    return Array(padding + 1).join(" ") + value;
   }
-
+  if (typeof padding === "string") {
+    return padding + value;
+  }
+  throw new Error(`Expected string or number, got '${typeof padding}'.`);
 }
 
+padLeft("Hello world", 4); // returns "    Hello world"
 
-function getAdminUser(n, i): User {
-  let name = n
-  let id = i
 
-  const nathan: User = new UserAccount(name, id)
 
-  return nathan
-}
 
-const user = new UserAccount("Murphy", 0)
 
-console.log(getAdminUser(7, "test"))
+
+
+
+
+
+
+
+
+
+
+
 

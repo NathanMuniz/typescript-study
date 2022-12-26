@@ -1,16 +1,9 @@
-var hellowWorld = "Hello World";
-var UserAccount = /** @class */ (function () {
-    function UserAccount(name, id) {
-        this.name = name;
-        this.id = id;
+function showType(obj) {
+    if (typeof (obj) == "number") {
+        console.log("Is a number");
     }
-    return UserAccount;
-}());
-function getAdminUser(n, i) {
-    var name = n;
-    var id = i;
-    var nathan = new UserAccount(name, id);
-    return nathan;
+    if (typeof (obj) == "string") {
+        console.log("Is a string");
+    }
 }
-var user = new UserAccount("Murphy", 0);
-console.log(getAdminUser(7, "test"));
+showType("teste");
