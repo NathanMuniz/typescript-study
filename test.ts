@@ -1,8 +1,37 @@
-type True_False = 1 | 0
 
-let a: True_False = 1
+interface A {
+  nameA: "teste";
+  testA: "anem"
+}
 
-console.log(typeof (a))
+interface B {
+  nameB: "nameB";
+  testB: "TesteB"
+}
+
+interface C {
+  nameC: "nameC";
+  testC: "testeC"
+}
+
+
+type Ab = A & string;
+
+let a: Ab;
+
+
+
+
+type Ac = A & C
+
+const handleABC = (response: Ac) => {
+  if (response.nameA) {
+    console.log(response.testA)
+    return
+  }
+
+  console.log(response.nameC)
+}
 
 
 
