@@ -42,15 +42,15 @@ function logger(state: NetworkState): string {
 }
 */
 function assertNever(x) {
-    throw new Error("Uncexpecte object" + x);
+  throw new Error("Uncexpecte object" + x);
 }
 function logger(s) {
-    switch (s.state) {
-        case "loading":
-            return "loading request";
-        case "failed":
-            return "failied with code ".concat(s.code);
-        case "success":
-            return "got response";
-    }
+  switch (s.state) {
+    case "loading":
+      return "loading request";
+    case "failed":
+      return "failied with code ".concat(s.code);
+    case "success":
+      return "got response";
+  }
 }
