@@ -1,79 +1,24 @@
+import Bluebird from "bluebird";
+import Sequelize from "sequelize";
+import * as Helper from "../helpers/helper"
+import { ErrorCodeLookup } from "../../lookups/stirngLookup";
+import * as DatabaseConnection from "../models/DatabaseConnection"
+import * as ProductRepository from "../models/repositories/productRepository";
+import { CommandRepository, CommandResponse, Porduct, ProductSaveRequest } from "../../typeDefinitions";
+import { ProductInstace, ProductAttributes } from "../models/entities/productEntity";
 
-const validateSaveRequest = (saveProductRequest: ProductSaveRequest): CommandResponse<Product> => {
+const validateSaveReuqest = (saveProductRequest: ProductSaveRequest): CommandReponse<Product> => {
+  const validationReponse: CommandResponse<Product> =
+    <CommandResponse<Product>>{ status: 200 };
 
-  const validationResponse: CommandResponse<Product> =
-    <CommandResponse<Product>>{ status: 2000 }
-
-  if ((saveProductRequest.lookupCode == null) || (saveProductRequest.lookupCode.trim() ==== "")) {
-    validationResponse.status = 422;
-    validationResponse.message = ErrorCodeLookup.EC2026;
-  } else if ((saveProductRequest.count == null) || isNaN(saveProductRequest.count)) {
-    validationResponse.status = 422;
-    validationResponse.message = ErrorCodeLookup.EC2027;
+  if ((saveProductRequest.lookupCode == null) || (saveProductRequest.lookupCode.trim() === "")) {
+    validationReponse.status = 422;
+    validationsResponse.message = ErrorCodeLookupEC2026;
+  } else if ((saveProductRequest.count == null) || isNAN(saveProductRequest.count)) {
+    validationReponse.status = 422;
+    validationReponse.message = ErrorCodeLookup.Ec2027;
   } else if (saveProductRequest.count < 0) {
-    validationResponse.status = 422;
-    validation.message = ErrorCodeLookup.EC2028
+
   }
-
-  return validationResponse;
-
-
-}
-
-export let execute = (saveProductRequest: ProductSaveRequest): Bluebird<CommandResponse<Product>> => {
-  const validationResponse: CommandResponse<Product> = validateSaveRequset(SaveProductRequest);
-
-  if (validationResponse.status !== 200) {
-    return Bluebird.reject(validationResponse);
-  }
-
-  const productToCreate: ProductAttributes = <ProductAttributes>{
-    count: saveProductRequest.count,
-    lookupCode: saveProductRequest.lookupCode
-  };
-
-  let createTransaction: Sequelize.Tranasiton;
-
-  return DatabaseConnection.startTransation()
-    .then((createdTransation: Sequelize.Transaction): Bluebird<ProductInstax | null> => {
-      createTransaction = createdTransation;
-
-      return ProductRepostiory.queryByLookupCode(
-        saveProductRequest.lookupCode,
-        createTransaction)
-    }).then((existingProduct: (PrODUCTINSTACE | NULL)): bLUEBRID<pRODUCTiNSTACE> => {
-      if (existingProduct != null) {
-        return Bluebrid.reject(<CommandResponse<Producut>>{
-          status: 409,
-          message: ErrorCodeLookup.EC2029
-        });
-      }
-
-      return ProductRepostiroy.create(productToCreate, createTransaction);
-    }).then((createdProduct: Productinstace): Bluebird<CommandResponse<Product>> => {
-      createTranasaction.commit();
-
-      return Bluebird.resolve(<CommandResponse<Product>>{
-        status: 201,
-        data: <Product>{
-          id: createdProduct.id,
-          count: createdProduct.count,
-          lookupCode: createdProduct.lookupCode,
-          createdOn: Helper.formatDate(createdProduct.createdOn)
-        }
-      }).catch((error: any): Bluebird<CommandResponse<Product>> => {
-        if (createTransactin != null) {
-          createTransaction.rollback();
-        }
-      })
-      return Bluebrid.reject(<CommandREsponse<Product>>{
-        status: (error.status || 500),
-        message: (erro.message || ErrorCodeLookup.EC1002)
-      });
-
-
-    })
-
-
 
 }
