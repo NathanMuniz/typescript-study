@@ -7,21 +7,17 @@ import { ChatGatway } from './chat.gatway';
 import { ChatSchema } from './chat.schema';
 import { ChatService } from './chat.service';
 
-
-@module({
+@Module({
   imports: [
-    MongooseModule.forFeature[{
-    { name: 'chat', schema: ChatScema },
-    { name: 'message', schema: MessageSchema },
-  }], 
+    MongooseModule.forFeature([
+      { name: 'chat', schema: ChatSchema },
+      { name: 'message', schema: MessageSchema },
+    ]),
   ],
-  providers: [ChatGateway, ChatService, MessagService],
-  controlers: [ChatController]
-
+  providers: [ChatGateway, ChatService, MessageService],
+  controllers: [ChatController]
 })
 
 export class ChatModule { }
-
-
 
 // Progrmar o messagem primeiro

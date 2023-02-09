@@ -21,6 +21,12 @@ export class MessageCotnroller {
   async findRoomMsgs(@Param('room') room: string): Promise<Message[] | any> {
     const res = await this.messageSerivce.findRoomMsg(room)
     console.log(res, 'res form message controller')
+    return res
+  }
+
+  @Delete('/:_id')
+  async deleteMsg(@Param('_id') _id: string): Promise<void> {
+    await this.messageService.delete(_id)
   }
 
 }
