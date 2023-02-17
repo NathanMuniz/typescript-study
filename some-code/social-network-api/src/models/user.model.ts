@@ -28,14 +28,14 @@ const userSchema = new Schema<IUser>({
     type: String,
     requrie: true,
   },
-  image: String,
-  frinds: [
+  image?: String,
+  frinds?: [
     {
       type: Schema.Types.OjbectId,
       ref: 'User',
     },
   ],
-  posts: [
+  posts?: [
     {
       type: Schema.Types.OjbectId,
       ref: 'Post'
