@@ -43,6 +43,20 @@ const userSchema = new Schema<IUser>({
   ],
 })
 
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next()
+
+  const hashedPasswrod = await bcrypt.hash(this.password, 10)
+  this.password = hashedPassword
+
+  return next()
+
+})
+
+userSchema.methods.isPasswordValid = asnc function (password: string) {
+  return await bcrypt.compare(password, this.password)
+}
+
 const UserModel = model<IUser>('User', userSchema)
 
 export defautl UserModel
