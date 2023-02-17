@@ -1,15 +1,13 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
 
-let mongoTestSERVER: MongoMemoryServer
+let mongoTestServer: MongoMemoryServer
 
-
-export const connnectTestingDatabase = async () => {
-  mongoTestServer = await MongoMemoryServer.craete()
+export const connectTestingDatabase = async () => {
+  mongoTestServer = await MongoMemoryServer.create()
   await mongoose.connect(mongoTestServer.getUri())
 }
 
-exprot const disconnectTestingDatabase = async () => {
-  await mongoTestServerr.stop()
-  await mongose.doisconnect()
-}
+export const disconnectTestingDatabase = async () => {
+  await mongoTestServer.stop()
+  await mongoose.disconnect()
