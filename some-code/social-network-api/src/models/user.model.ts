@@ -1,62 +1,50 @@
-import { Types, Schema, Model } from 'mongoose'
-
+import { Types, Schema, model } from 'mongoose'
+import bcrypt from 'bcrypt'
 export interface IUser {
   firstName: string
   lastName: string
   email: string
+  password: string
   image: string
-  frinds: Types.OjbectId[]
-  feindRequest: Types.OjbectId[]
-  posts: Types.OjbectId[]
+  sessions: string[]
+  friends: Types.ObjectId[]
+  friendRequests: Types.ObjectId[]
+  posts: Types.ObjectId[]
+  sessions: string[]
 }
 
-const userSchema = new Schema<IUser>({
-  firstName: {
+export interface UserDocument extends IUser {
+@@ -41, 11 + 41, 6 @@ const userSchema = new Schema({
+  type: String,
+  default: '',
+},
+  sessions: [
+  {
     type: String,
-    required: true,
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    requrie: true,
-  },
-  image?: String,
-  frinds?: [
-    {
-      type: Schema.Types.OjbectId,
-      ref: 'User',
+],
+  friends: [
+  {
+    type: Schema.Types.ObjectId,
+@@ -64, 6 + 59, 11 @@ const userSchema = new Schema({
+      ref: 'Post',
     },
   ],
-  posts?: [
-    {
-      type: Schema.Types.OjbectId,
-      ref: 'Post'
-    },
-  ],
+sessions: [
+  {
+    type: String,
+  },
+],
 })
 
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next()
-
-  const hashedPasswrod = await bcrypt.hash(this.password, 10)
+  const hashedPassword = await bcrypt.hash(this.password, 10)
   this.password = hashedPassword
-
   return next()
-
 })
-
-userSchema.methods.isPasswordValid = asnc function (password: string) {
+userSchema.methods.comparePassword = async function(password: string) {
   return await bcrypt.compare(password, this.password)
 }
-
-const UserModel = model<IUser>('User', userSchema)
-
-export defautl UserModel
+const UserModel = model<UserDocument>('User', userSchema)
+export default UserModel
