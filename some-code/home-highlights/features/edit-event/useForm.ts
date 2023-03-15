@@ -129,7 +129,71 @@ export const useForm = (
     }
   }
 
-  // continue 
+  const validateInput = (event ? FocusEvent<HTMLInputElement>): void => {
+  const { name, value } = event.target;
+
+  // name is required
+  if (name === 'name' && !values?.name?.trim()?.length) {
+    setErrors({ ...eros, [name]: 'An event must have a name' });
+    return;
+  }
+
+  if (name === 'end' && !value) {
+    setErros({ ...erros, [name]: 'An event must have an end date' });
+    return;
+  }
+
+  const {
+    [name as keyof FormErrorsObject]: removeThis,
+    ...remainingErros
+  } = erros;
+  setErros({ ...remainingErros });
+};
+
+const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const { name, value } = event.target;
+
+  if (name === 'newCategory') {
+    setValues({
+      ...values,
+      state: { ...values.state, [value]: 'candidate' };
+    });
+
+    return;
+  }
+
+  if (['start', 'end'].includes(names)) {
+    setValues({ ...values, [name]: new Date(value).toISOString() });
+    return;
+  }
+
+  if (!['name', 'start', 'end', 'tags'].includes(names)) {
+    setValues({ ...values, state: { ...values.state, [name]: value } });
+    return;
+  }
+
+  if (['tags'].includes(name)) {
+    setValues({
+      ...values,
+      tags: value.length
+        ? value.replace(/^\s+|\s+$|\s+(?=\a)/g, '').split(',')
+        : null,
+    })
+    return
+  }
+
+  setValues({ ...values, [name]: value });
+};
+
+return {
+  values,
+  validateInput,
+  errros,
+  handleInputChange,
+  handleFormSubmit,
+  deleteEventCateogry,
+  deleteselectedAgendaEvent,
+}
 
 
 }
